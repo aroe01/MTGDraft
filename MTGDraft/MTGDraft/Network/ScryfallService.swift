@@ -97,8 +97,16 @@ struct ScryfallService {
         try await searchCards(query: "set:\(setCode)")
     }
 
-    func fetchCard(id: UUID) async throws -> MTGCard {
-        try await get("cards/\(id.uuidString.lowercased())")
+    /// Fetches every card in a set, following pagination until `has_more` is false.
+    func fetchAllCards(inSet setCode: String) async throws -> [MTGCard] {
+        var page: ScryfallList<MTGCard> = try await fetchCards(inSet: setCode)
+        var all = page.data
+        while page.hasMore, let next = page.nextPage {
+            page = try await request(url: next)
+            all.append(contentsOf: page.data)
+        }
+        print("[Scryfall] ✔ Fetched \(all.count) cards for set \(setCode)")
+        return all
     }
 
     func fetchCard(named name: String) async throws -> MTGCard {

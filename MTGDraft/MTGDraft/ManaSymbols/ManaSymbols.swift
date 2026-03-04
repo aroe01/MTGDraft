@@ -126,7 +126,7 @@ struct ManaCostView: View {
         let symbols = ManaSymbols.parse(cost)
         if !symbols.isEmpty {
             HStack(spacing: 2) {
-                ForEach(symbols, id: \.self) { name in
+                ForEach(symbols.enumerated(), id: \.0) { index, name in
                     Image(name)
                         .resizable()
                         .scaledToFit()

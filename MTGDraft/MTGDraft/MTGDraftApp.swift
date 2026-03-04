@@ -18,7 +18,7 @@ struct MTGDraftApp: App {
                 DecksView()
                     .tabItem { Label("Decks", systemImage: "rectangle.stack") }
 
-                DraftView()
+                DraftSetListView()
                     .tabItem { Label("Draft", systemImage: "shuffle") }
             }
         }
